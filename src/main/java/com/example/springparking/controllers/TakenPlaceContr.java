@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/takenPlaces")
@@ -24,46 +25,56 @@ public class TakenPlaceContr {
     @Autowired
     private PlaceRepository placeRepository;
 
+    @ApiOperation(value = "All taken places")
+    @GetMapping("")
+    public List<TakenPlaces> takePlace() {
+       return takenPlaceRepository.findAll();
+    }
+
+
     @ApiOperation(value = "Take place")
     @PostMapping("/{vehicleId}/{placeId}")
-    public String takePlace(@PathVariable("vehicleId") Long vehicleId, @PathVariable("placeId") Long placeId){
+    public TakenPlaces takePlace(@PathVariable("vehicleId") Long vehicleId, @PathVariable("placeId") Long placeId){
         Date date = new Date();
         Place place = placeRepository.findById(placeId).get();
         Vehicle vehicle = vehicleRepository.findById(vehicleId).get();
         if(place.isStatus()){
-            TakenPlaces takenPlaces = new TakenPlaces();
-            takenPlaces.setDate(date);
-            takenPlaces.setPlace(place);
-            takenPlaces.setVehicle(vehicle);
-            place.setStatus(false);
-            placeRepository.save(place);
-            return "Success";
+            if (place != null){
+                if (vehicle != null){
+                    TakenPlaces takenPlaces = new TakenPlaces();
+                    takenPlaces.setDate(date);
+                    takenPlaces.setPlace(place);
+                    takenPlaces.setVehicle(vehicle);
+                    place.setStatus(false);
+                    placeRepository.save(place);
+                    takenPlaceRepository.save(takenPlaces);
+                    return takenPlaces;
+                }
+                else {
+                    return null;
+                }
+            }
+            else {
+                return null;
+            }
         }
         else {
-         return "This place is not free!";
+         return null;
         }
     }
 
     @ApiOperation(value = "Leave Place")
-    @DeleteMapping("/{vehicleId}/{placeId}")
-    public String leavePlace(@PathVariable("vehicleId") Long vehicleId, @PathVariable("placeId") Long placeId){
-        Place place = placeRepository.findById(placeId).get();
-        Vehicle vehicle = vehicleRepository.findById(vehicleId).get();
-        if (vehicle.getTakenPlaces() != null){
-            if (vehicle.getTakenPlaces().getPlace() == place){
-                 for (TakenPlaces takenPlaces :takenPlaceRepository.findAll()){
-                     if (takenPlaces.getPlace().getId().equals(placeId) && takenPlaces.getVehicle().getId().equals(vehicleId)){
-                         takenPlaceRepository.delete(takenPlaces);
-                         return vehicle.toString() + " leaves this place " + place.toString();
-                     }
-                 }
-            }
-            else {
-                return "Vehicle did not take this place " + place.toString();
-            }
-        }else {
-            return "Vehicle has not any taken place!";
-        }
-        return "Error";
+    @DeleteMapping("/{id}")
+    public String leavePlace(@PathVariable Long id) {
+//        Place place = placeRepository.findById(placeId).get();
+//        Vehicle vehicle = vehicleRepository.findById(vehicleId).get();
+      TakenPlaces takenPlaces = takenPlaceRepository.findById(id).get();
+      if (takenPlaces != null){
+          takenPlaceRepository.delete(takenPlaces);
+          return "urrrrra";
+      }
+      else {
+          return "neu takogo";
+      }
     }
 }

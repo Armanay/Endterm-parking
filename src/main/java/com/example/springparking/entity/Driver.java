@@ -22,7 +22,7 @@ public class Driver implements UserDetails {
     private String surname;
     private String phone;
 
-    @OneToMany(mappedBy = "driver", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "driver", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Vehicle> vehicles;
 
     @ManyToMany(fetch = FetchType.LAZY)

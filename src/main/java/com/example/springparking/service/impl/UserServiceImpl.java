@@ -66,6 +66,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public Driver findUser(String uName) {
+        Driver driver = driverRepository.findByUsername(uName);
+        if (driver == null){
+            throw new RuntimeException("User with this username not exists");
+        }
+        return driver;
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         Driver driver =  driverRepository.findByUsername(s);
         if (driver == null){

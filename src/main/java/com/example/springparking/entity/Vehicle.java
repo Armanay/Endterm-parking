@@ -1,6 +1,8 @@
 package com.example.springparking.entity;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 
 import javax.persistence.*;
 
@@ -14,12 +16,15 @@ public class Vehicle  {
     @Column(unique = true)
     private String nomer;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "takenVehicleId")
+
+    @OneToOne(mappedBy = "vehicle", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Getter(AccessLevel.NONE)
     private TakenPlaces takenPlaces;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "driverId")
+    @Getter(AccessLevel.NONE)
     private Driver driver;
 
 }

@@ -27,13 +27,19 @@ public class VehicleContr {
         if (vehicle1 !=null){
             throw new RuntimeException("Vehicle with this nomer exists");
         }
-        repository.saveAndFlush(vehicle);
+        repository.save(vehicle);
     }
 
-    @ApiOperation(value = "Find book by Vehicle")
+    @ApiOperation(value = "Find Vehicle by id")
     @GetMapping("/{id}")
     public Vehicle findById(@PathVariable("id") Long id){
         return repository.findById(id).get();
+    }
+
+    @ApiOperation(value = "Find Vehicle by driver id")
+    @GetMapping("/driver/vehicles/{id}")
+    public List<Vehicle> findByDriverId(@PathVariable("id") Long id){
+        return repository.findByDriver_Id(id);
     }
 
     @ApiOperation(value = "Find book by nomer")

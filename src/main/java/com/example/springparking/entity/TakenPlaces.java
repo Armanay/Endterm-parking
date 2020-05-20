@@ -1,6 +1,8 @@
 package com.example.springparking.entity;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,10 +15,15 @@ public class TakenPlaces {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Date date;
-    @OneToOne(mappedBy = "takenPlaces", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "placeId")
     private Place place;
 
-    @OneToOne(mappedBy = "takenPlaces", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vehicleId")
     private Vehicle vehicle;
 
 

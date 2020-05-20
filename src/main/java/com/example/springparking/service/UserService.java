@@ -12,4 +12,5 @@ public interface UserService {
     void deleteDriver(Long id);
     Driver findDriverById(Long id);
     Driver findDriverByUsername(String uName);
+    Driver findUser(String uName);
 }

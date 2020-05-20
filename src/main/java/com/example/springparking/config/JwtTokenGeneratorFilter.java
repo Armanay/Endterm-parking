@@ -60,7 +60,7 @@ public class JwtTokenGeneratorFilter extends UsernamePasswordAuthenticationFilte
                 .signWith(SignatureAlgorithm.HS512, "secret-key".getBytes())
                 .compact();
         System.out.println(token);
-        response.addHeader("Authorization", "Bearer " +  token);
+        response.addHeader("Authorization", token);
 
     }
 }

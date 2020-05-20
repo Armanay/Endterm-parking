@@ -28,6 +28,14 @@ public class DriverContr {
         return userService.findDriverById(id);
     }
 
+    @ApiOperation(value = "Get driver by Username")
+    @GetMapping("/user/{username}")
+    public Driver getByUsername(@PathVariable("username") String username)
+    {
+        return userService.findUser(username);
+    }
+
+
     @ApiOperation(value = "Driver registration")
     @PostMapping("")
     public void newDriver(@RequestBody Driver driver){
